@@ -1,1 +1,32 @@
-<h1>AAAA</h1>
+<h1>Pattern A Seating Arrangement</h1>
+
+<%= form_with(model: @seating, url: seatings_path, local: true) do |form| %>
+  <table>
+    <thead>
+      <tr>
+        <th></th>
+        <% ('A'..'F').each do |column| %>
+          <th><%= column %></th>
+        <% end %>
+      </tr>
+    </thead>
+    <tbody>
+      <% (1..6).each do |row| %>
+        <tr>
+          <td><%= row %></td>
+          <% ('A'..'F').each do |column| %>
+            <td>
+              <% student = @seating.students.find_by(table_code: column, position_code: row) || @seating.students.build(table_code: column, position_code: row) %>
+              <%= form.fields_for :students, student do |student_fields| %>
+                <%= student_fields.hidden_field :table_code, value: column %>
+                <%= student_fields.hidden_field :position_code, value: row %>
+                <%= student_fields.text_field :name, class: 'student-name' %>
+              <% end %>
+            </td>
+          <% end %>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+  <%= form.submit "Save" %>
+<% end %>
