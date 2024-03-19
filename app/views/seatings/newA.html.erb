@@ -1,6 +1,6 @@
-<h1>Pattern A Seating Arrangement</h1>
+<!-- newA.html.erb -->
 
-<%= form_with(model: @seating, url: seatings_path, local: true) do |form| %>
+<%= form_with(model: @seating, url: seatings_path, method: :post) do |form| %>
   <table>
     <thead>
       <tr>
@@ -16,11 +16,10 @@
           <td><%= row %></td>
           <% ('A'..'F').each do |column| %>
             <td>
-              <% student = @seating.students.find_by(table_code: column, position_code: row) || @seating.students.build(table_code: column, position_code: row) %>
-              <%= form.fields_for :students, student do |student_fields| %>
+              <%= form.fields_for :students, @seating.students.find_or_initialize_by(table_code: column, position_code: row) do |student_fields| %>
                 <%= student_fields.hidden_field :table_code, value: column %>
                 <%= student_fields.hidden_field :position_code, value: row %>
-                <%= student_fields.text_field :name, class: 'student-name' %>
+                <%= student_fields.text_field :name, placeholder: 'Enter name' %>
               <% end %>
             </td>
           <% end %>
@@ -28,5 +27,5 @@
       <% end %>
     </tbody>
   </table>
-  <%= form.submit "Save" %>
+  <%= form.submit 'Submit' %>
 <% end %>

@@ -11,7 +11,8 @@ class SeatingsController < ApplicationController
   end
 
   def new
-    @seating = Seating.new
+      @seating = Seating.new
+    
     select_pattern
   end
 
