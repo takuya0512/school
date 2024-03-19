@@ -1,6 +1,9 @@
 Rails.application.routes.draw do
-  # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
-
-  # Defines the root path route ("/")
-  # root "articles#index"
+  devise_for :users
+  root to: 'seatings#index'
+  resources :seatings, only: [:index, :new, :create]  do
+    collection do
+      get 'select_pattern'
+    end
+  end
 end
